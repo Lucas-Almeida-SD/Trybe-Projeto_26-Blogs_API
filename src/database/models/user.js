@@ -17,6 +17,9 @@ module.exports = (sequelize, DataType) => {
     image: {
       type: DataType.STRING,
     },
+  },
+  {
+    timestamps: false,
   });
 
   return User;
