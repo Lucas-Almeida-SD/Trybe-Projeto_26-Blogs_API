@@ -1,5 +1,5 @@
 const express = require('express');
-const loginRouter = require('./routers/login.router');
+const routers = require('./routers');
 const errorMiddleware = require('./middlewares/errorMiddleware');
 
 // ...
@@ -8,7 +8,8 @@ const app = express();
 
 app.use(express.json());
 
-app.use('/login', loginRouter);
+app.use('/login', routers.loginRouter);
+app.use('/user', routers.userRouter);
 
 app.use(errorMiddleware);
 
