@@ -7,6 +7,16 @@ const getAllUsers = async (_req, res) => {
   res.status(httpStatus.OK).json(users);
 };
 
+const getUserById = async (req, res, next) => {
+  const { id } = req.params;
+
+  const user = await userService.getUserById(id);
+
+  if (user.error) return next(user.error);
+
+  res.status(httpStatus.OK).json(user);
+};
+
 const create = async (req, res, next) => {
   const { displayName, email, password, image } = req.body;
 
@@ -18,6 +28,7 @@ const create = async (req, res, next) => {
 };
 
 module.exports = {
-  create,
   getAllUsers,
+  getUserById,
+  create,
 };
