@@ -31,6 +31,17 @@ const getAllUsers = async () => {
   return users;
 };
 
+const getUserById = async (id) => {
+  const user = await User.findOne({
+    where: { id },
+    attributes: ['id', 'displayName', 'email', 'image'],
+  });
+
+  if (!user) return generateError('NOT_FOUND', 'User does not exist');
+
+  return user;
+};
+
 const create = async (displayName, email, password, image) => {
   const isUserValid = validateUser(displayName, email, password);
 
@@ -49,5 +60,6 @@ const create = async (displayName, email, password, image) => {
 
 module.exports = {
   getAllUsers,
+  getUserById,
   create,
 };
