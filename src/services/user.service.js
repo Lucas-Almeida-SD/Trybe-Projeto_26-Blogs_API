@@ -25,6 +25,12 @@ const validateUser = (displayName, email, password) => {
   }
 };
 
+const getAllUsers = async () => {
+  const users = await User.findAll({ attributes: ['id', 'displayName', 'email', 'image'] });
+
+  return users;
+};
+
 const create = async (displayName, email, password, image) => {
   const isUserValid = validateUser(displayName, email, password);
 
@@ -42,5 +48,6 @@ const create = async (displayName, email, password, image) => {
 };
 
 module.exports = {
+  getAllUsers,
   create,
 };
