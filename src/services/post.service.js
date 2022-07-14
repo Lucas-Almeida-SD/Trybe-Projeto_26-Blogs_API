@@ -70,8 +70,24 @@ const create = async (userId, title, content, categoryIds) => {
   }
 };
 
+const update = async (postId, userId, title, content) => {
+  validatePost(title, content, Array.of(1));
+
+  const post = await getPostById(postId);
+
+  if (post.user.id !== userId) throw generateError('UNAUTHORIZED', 'Unauthorized user');
+
+  await BlogPost.update(
+    { title, content },
+    { where: { id: postId, userId } },
+  );
+
+  return { ...post.dataValues, title, content };
+};
+
 module.exports = {
   getAllPosts,
   getPostById,
   create,
+  update,
 };
