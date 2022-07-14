@@ -1,5 +1,10 @@
+const Sequelize = require('sequelize');
 const { BlogPost, Category, PostCategory } = require('../database/models');
 const generateError = require('../helpers/generateError');
+
+const config = require('../database/config/config');
+
+const sequelize = new Sequelize(config.development);
 
 const validatePost = (title, content, categoryIds) => {
   if (!title || !content || !categoryIds || !categoryIds.length > 0) {
@@ -24,12 +29,21 @@ const create = async (userId, title, content, categoryIds) => {
 
   const checkCategoryIds = await validateCategoryIds(categoryIds);
 
-  const post = await BlogPost.create({ userId, title, content });
+  const t = await sequelize.transaction();
 
-  await Promise.all(checkCategoryIds.map((id) => (
-    PostCategory.create({ postId: post.id, categoryId: id }))));
+  try {
+    const post = await BlogPost.create({ userId, title, content }, { transaction: t });
+  
+    await Promise.all(checkCategoryIds.map((id) => (
+      PostCategory.create({ postId: post.id, categoryId: id }, { transaction: t }))));
 
-  return post;
+    await t.commit();
+  
+    return post;
+  } catch (err) {
+    await t.rollback();
+    throw generateError(null, 'Operation failed');
+  }
 };
 
 module.exports = {
