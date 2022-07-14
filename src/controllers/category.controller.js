@@ -1,6 +1,12 @@
 const httpStatus = require('../helpers/httpStatus');
 const categoryService = require('../services/category.service');
 
+const getAllCategories = async (req, res) => {
+  const categories = await categoryService.getAllCategories();
+
+  res.status(httpStatus.OK).json(categories);
+};
+
 const create = async (req, res, next) => {
   const { name } = req.body;
 
@@ -12,5 +18,6 @@ const create = async (req, res, next) => {
 };
 
 module.exports = {
+  getAllCategories,
   create,
 };
