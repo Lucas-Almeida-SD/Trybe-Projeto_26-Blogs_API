@@ -19,6 +19,8 @@ const auth = (req, res, next) => {
     const isTokenValid = validateToken(token);
   
     if (isTokenValid.error) return next(isTokenValid.error);
+
+    req.user = isTokenValid.data;
   
     next();
   } catch (err) {
