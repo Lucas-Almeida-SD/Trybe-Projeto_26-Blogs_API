@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const { BlogPost, Category, PostCategory } = require('../database/models');
+const { BlogPost, Category, PostCategory, User } = require('../database/models');
 const generateError = require('../helpers/generateError');
 
 const config = require('../database/config/config');
@@ -22,6 +22,16 @@ const validateCategoryIds = async (categoryIds) => {
   if (newCategoryIds.length === 0) throw generateError('BAD_REQUEST', '"categoryIds" not found');
 
   return newCategoryIds;
+};
+
+const getAllPosts = async () => {
+  const posts = await BlogPost.findAll({ 
+    include: [
+      { model: User, as: 'user', attributes: ['id', 'displayName', 'email', 'image'] },
+      { model: Category, as: 'categories', through: { attributes: [] } }],
+  });
+
+  return posts;
 };
 
 const create = async (userId, title, content, categoryIds) => {
@@ -47,5 +57,6 @@ const create = async (userId, title, content, categoryIds) => {
 };
 
 module.exports = {
+  getAllPosts,
   create,
 };
