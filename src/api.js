@@ -12,6 +12,7 @@ app.use(express.json());
 app.use('/login', rescue(routers.loginRouter));
 app.use('/user', rescue(routers.userRouter));
 app.use('/categories', rescue(routers.categoryRouter));
+app.use('/post', rescue(routers.postRouter));
 
 app.use(errorMiddleware);
 
