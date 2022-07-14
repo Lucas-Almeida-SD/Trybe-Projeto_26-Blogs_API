@@ -1,4 +1,3 @@
-const { Op } = require('sequelize');
 const { User } = require('../database/models');
 const generateError = require('../helpers/generateError');
 const generateToken = require('../helpers/generateToken');
@@ -9,7 +8,7 @@ const getToken = async (email, password) => {
     throw generateError(httpStatus.BAD_REQUEST, 'Some required fields are missing');
   }
 
-  const user = await User.findOne({ where: { [Op.and]: [{ email }, { password }] } });
+  const user = await User.findOne({ where: { email } });
 
   if (!user) throw generateError(httpStatus.BAD_REQUEST, 'Invalid fields');
 
