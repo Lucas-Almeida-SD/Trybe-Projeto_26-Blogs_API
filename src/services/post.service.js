@@ -87,9 +87,18 @@ const update = async (postId, userId, title, content) => {
   return { ...post.dataValues, title, content };
 };
 
+const exclude = async (postId, userId) => {
+  const post = await getPostById(postId);
+
+  if (post.user.id !== userId) throw generateError(httpStatus.UNAUTHORIZED, 'Unauthorized user');
+
+  await BlogPost.destroy({ where: { id: postId } });
+};
+
 module.exports = {
   getAllPosts,
   getPostById,
   create,
   update,
+  exclude,
 };
