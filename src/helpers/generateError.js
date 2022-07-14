@@ -1,7 +1,5 @@
-const httpStatus = require('./httpStatus');
-
 const generateError = (code, message) => ({
-  code: httpStatus[code],
+  code,
   message,
 });
 
