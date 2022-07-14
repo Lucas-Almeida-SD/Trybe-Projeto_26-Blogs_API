@@ -7,12 +7,10 @@ const getAllCategories = async (req, res) => {
   res.status(httpStatus.OK).json(categories);
 };
 
-const create = async (req, res, next) => {
+const create = async (req, res) => {
   const { name } = req.body;
 
   const category = await categoryService.create(name);
-
-  if (category.error) return next(category.error);
 
   res.status(httpStatus.CREATED).json(category);
 };

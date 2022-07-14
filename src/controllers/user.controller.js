@@ -7,22 +7,18 @@ const getAllUsers = async (_req, res) => {
   res.status(httpStatus.OK).json(users);
 };
 
-const getUserById = async (req, res, next) => {
+const getUserById = async (req, res) => {
   const { id } = req.params;
 
   const user = await userService.getUserById(id);
 
-  if (user.error) return next(user.error);
-
   res.status(httpStatus.OK).json(user);
 };
 
-const create = async (req, res, next) => {
+const create = async (req, res) => {
   const { displayName, email, password, image } = req.body;
 
   const token = await userService.create(displayName, email, password, image);
-
-  if (token.error) return next(token.error);
 
   res.status(httpStatus.CREATED).json({ token });
 };
