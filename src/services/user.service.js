@@ -1,4 +1,5 @@
 const { User } = require('../database/models');
+const encryptPassword = require('../helpers/encryptPassword');
 const generateError = require('../helpers/generateError');
 const generateToken = require('../helpers/generateToken');
 const httpStatus = require('../helpers/httpStatus');
@@ -50,7 +51,8 @@ const create = async (displayName, email, password, image) => {
 
   if (checkIfEmailExists) throw generateError(httpStatus.CONFLICT, 'User already registered');
 
-  const user = await User.create({ displayName, email, password, image });
+  const encryptedPassword = encryptPassword(password);
+  const user = await User.create({ displayName, email, password: encryptedPassword, image });
 
   const token = generateToken(user);
 
