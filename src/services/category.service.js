@@ -8,7 +8,7 @@ const getAllCategories = async () => {
 };
 
 const create = async (name) => {
-  if (!name) return generateError('BAD_REQUEST', '"name" is required');
+  if (!name) throw generateError('BAD_REQUEST', '"name" is required');
 
   const category = await Category.create({ name });
 

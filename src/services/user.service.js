@@ -15,13 +15,13 @@ const validateUser = (displayName, email, password) => {
 
   switch (true) {
     case (!validateDisplayName(displayName)):
-      return generateError('BAD_REQUEST', displayNameMessage);
+      throw generateError('BAD_REQUEST', displayNameMessage);
     case (!validateEmail(email)):
-      return generateError('BAD_REQUEST', emailMessage);
+      throw generateError('BAD_REQUEST', emailMessage);
     case (!validatePassword(password)):
-      return generateError('BAD_REQUEST', passwordMessage);
+      throw generateError('BAD_REQUEST', passwordMessage);
     default:
-      return {};
+      return true;
   }
 };
 
@@ -37,19 +37,17 @@ const getUserById = async (id) => {
     attributes: ['id', 'displayName', 'email', 'image'],
   });
 
-  if (!user) return generateError('NOT_FOUND', 'User does not exist');
+  if (!user) throw generateError('NOT_FOUND', 'User does not exist');
 
   return user;
 };
 
 const create = async (displayName, email, password, image) => {
-  const isUserValid = validateUser(displayName, email, password);
-
-  if (isUserValid.error) return { error: isUserValid.error };
+  validateUser(displayName, email, password);
 
   const checkIfEmailExists = await User.findOne({ where: { email } });
 
-  if (checkIfEmailExists) return generateError('CONFLICT', 'User already registered');
+  if (checkIfEmailExists) throw generateError('CONFLICT', 'User already registered');
 
   const user = await User.create({ displayName, email, password, image });
 

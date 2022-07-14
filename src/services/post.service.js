@@ -1,26 +1,28 @@
 const { BlogPost, Category, PostCategory } = require('../database/models');
 const generateError = require('../helpers/generateError');
 
-const validatePost = (title, content, categoryIds) => (
-  title && content && categoryIds && categoryIds.length > 0
-);
+const validatePost = (title, content, categoryIds) => {
+  if (!title || !content || !categoryIds || !categoryIds.length > 0) {
+    throw generateError('BAD_REQUEST', 'Some required fields are missing');
+  }
+};
 
 const validateCategoryIds = async (categoryIds) => {
   const categories = await Category.findAll();
 
   const categoryIdsInTheDB = categories.map((category) => category.id);
 
-  return categoryIds.filter((id) => categoryIdsInTheDB.includes(id));
+  const newCategoryIds = categoryIds.filter((id) => categoryIdsInTheDB.includes(id));
+
+  if (newCategoryIds.length === 0) throw generateError('BAD_REQUEST', '"categoryIds" not found');
+
+  return newCategoryIds;
 };
 
 const create = async (userId, title, content, categoryIds) => {
-  const isPostValid = validatePost(title, content, categoryIds);
-  if (!isPostValid) {
-    return generateError('BAD_REQUEST', 'Some required fields are missing');
-  }
+  validatePost(title, content, categoryIds);
 
   const checkCategoryIds = await validateCategoryIds(categoryIds);
-  if (checkCategoryIds.length === 0) return generateError('BAD_REQUEST', '"categoryIds" not found');
 
   const post = await BlogPost.create({ userId, title, content });
 
