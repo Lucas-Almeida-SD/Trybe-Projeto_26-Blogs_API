@@ -1,5 +1,7 @@
 const jwt = require('jsonwebtoken');
 const generateError = require('../helpers/generateError');
+const httpStatus = require('../helpers/httpStatus');
+
 require('dotenv').config();
 
 const secret = process.env.JWT_SECRET;
@@ -13,7 +15,7 @@ const validateToken = (token) => {
 const auth = (req, res, next) => {
   const token = req.headers.authorization;
 
-  if (!token) throw generateError('UNAUTHORIZED', 'Token not found');
+  if (!token) throw generateError(httpStatus.UNAUTHORIZED, 'Token not found');
 
   try {
     const isTokenValid = validateToken(token);
@@ -22,7 +24,7 @@ const auth = (req, res, next) => {
   
     next();
   } catch (_err) {
-    next(generateError('UNAUTHORIZED', 'Expired or invalid token'));
+    next(generateError(httpStatus.UNAUTHORIZED, 'Expired or invalid token'));
   }
 };
 

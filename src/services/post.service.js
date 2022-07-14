@@ -1,14 +1,14 @@
 const Sequelize = require('sequelize');
 const { BlogPost, Category, PostCategory, User } = require('../database/models');
 const generateError = require('../helpers/generateError');
-
+const httpStatus = require('../helpers/httpStatus');
 const config = require('../database/config/config');
 
 const sequelize = new Sequelize(config.development);
 
 const validatePost = (title, content, categoryIds) => {
   if (!title || !content || !categoryIds || !categoryIds.length > 0) {
-    throw generateError('BAD_REQUEST', 'Some required fields are missing');
+    throw generateError(httpStatus.BAD_REQUEST, 'Some required fields are missing');
   }
 };
 
@@ -19,7 +19,9 @@ const validateCategoryIds = async (categoryIds) => {
 
   const newCategoryIds = categoryIds.filter((id) => categoryIdsInTheDB.includes(id));
 
-  if (newCategoryIds.length === 0) throw generateError('BAD_REQUEST', '"categoryIds" not found');
+  if (newCategoryIds.length === 0) {
+    throw generateError(httpStatus.BAD_REQUEST, '"categoryIds" not found');
+  }
 
   return newCategoryIds;
 };
@@ -43,7 +45,7 @@ const getPostById = async (id) => {
     ],
   });
 
-  if (!post) throw generateError('NOT_FOUND', 'Post does not exist');
+  if (!post) throw generateError(httpStatus.NOT_FOUND, 'Post does not exist');
 
   return post;
 };
@@ -75,7 +77,7 @@ const update = async (postId, userId, title, content) => {
 
   const post = await getPostById(postId);
 
-  if (post.user.id !== userId) throw generateError('UNAUTHORIZED', 'Unauthorized user');
+  if (post.user.id !== userId) throw generateError(httpStatus.UNAUTHORIZED, 'Unauthorized user');
 
   await BlogPost.update(
     { title, content },

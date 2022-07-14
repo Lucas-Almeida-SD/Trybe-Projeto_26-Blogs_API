@@ -1,6 +1,7 @@
 const { User } = require('../database/models');
 const generateError = require('../helpers/generateError');
 const generateToken = require('../helpers/generateToken');
+const httpStatus = require('../helpers/httpStatus');
 
 const validateDisplayName = (displayName) => (displayName && displayName.length >= 8);
 
@@ -15,11 +16,11 @@ const validateUser = (displayName, email, password) => {
 
   switch (true) {
     case (!validateDisplayName(displayName)):
-      throw generateError('BAD_REQUEST', displayNameMessage);
+      throw generateError(httpStatus.BAD_REQUEST, displayNameMessage);
     case (!validateEmail(email)):
-      throw generateError('BAD_REQUEST', emailMessage);
+      throw generateError(httpStatus.BAD_REQUEST, emailMessage);
     case (!validatePassword(password)):
-      throw generateError('BAD_REQUEST', passwordMessage);
+      throw generateError(httpStatus.BAD_REQUEST, passwordMessage);
     default:
       return true;
   }
@@ -37,7 +38,7 @@ const getUserById = async (id) => {
     attributes: ['id', 'displayName', 'email', 'image'],
   });
 
-  if (!user) throw generateError('NOT_FOUND', 'User does not exist');
+  if (!user) throw generateError(httpStatus.NOT_FOUND, 'User does not exist');
 
   return user;
 };
@@ -47,7 +48,7 @@ const create = async (displayName, email, password, image) => {
 
   const checkIfEmailExists = await User.findOne({ where: { email } });
 
-  if (checkIfEmailExists) throw generateError('CONFLICT', 'User already registered');
+  if (checkIfEmailExists) throw generateError(httpStatus.CONFLICT, 'User already registered');
 
   const user = await User.create({ displayName, email, password, image });
 
