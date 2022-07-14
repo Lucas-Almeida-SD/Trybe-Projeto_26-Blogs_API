@@ -34,6 +34,20 @@ const getAllPosts = async () => {
   return posts;
 };
 
+const getPostById = async (id) => {
+  const post = await BlogPost.findOne({
+    where: { id },
+    include: [
+      { model: User, as: 'user', attributes: ['id', 'displayName', 'email', 'image'] },
+      { model: Category, as: 'categories', through: { attributes: [] } },
+    ],
+  });
+
+  if (!post) throw generateError('NOT_FOUND', 'Post does not exist');
+
+  return post;
+};
+
 const create = async (userId, title, content, categoryIds) => {
   validatePost(title, content, categoryIds);
 
@@ -58,5 +72,6 @@ const create = async (userId, title, content, categoryIds) => {
 
 module.exports = {
   getAllPosts,
+  getPostById,
   create,
 };
