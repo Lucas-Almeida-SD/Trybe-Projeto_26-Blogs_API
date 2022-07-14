@@ -33,9 +33,19 @@ const update = async (req, res) => {
   res.status(httpStatus.OK).json(post);
 };
 
+const exclude = async (req, res) => {
+  const { id: postId } = req.params;
+  const { id: userId } = req.user;
+
+  await postService.exclude(postId, userId);
+
+  res.status(httpStatus.NO_CONTENT).end();
+};
+
 module.exports = {
   getAllPosts,
   getPostById,
   create,
   update,
+  exclude,
 };
