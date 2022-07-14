@@ -1,6 +1,12 @@
 const { Category } = require('../database/models');
 const generateError = require('../helpers/generateError');
 
+const getAllCategories = async () => {
+  const categories = await Category.findAll();
+
+  return categories;
+};
+
 const create = async (name) => {
   if (!name) return generateError('BAD_REQUEST', '"name" is required');
 
@@ -10,5 +16,6 @@ const create = async (name) => {
 };
 
 module.exports = {
+  getAllCategories,
   create,
 };
