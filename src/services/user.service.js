@@ -1,8 +1,12 @@
-const { User } = require('../database/models');
+const Sequelize = require('sequelize');
+const { User, BlogPost, PostCategory } = require('../database/models');
 const encryptPassword = require('../helpers/encryptPassword');
 const generateError = require('../helpers/generateError');
 const generateToken = require('../helpers/generateToken');
 const httpStatus = require('../helpers/httpStatus');
+const config = require('../database/config/config');
+
+const sequelize = new Sequelize(config.development);
 
 const validateDisplayName = (displayName) => (displayName && displayName.length >= 8);
 
@@ -59,8 +63,31 @@ const create = async (displayName, email, password, image) => {
   return token;
 };
 
+const exclude = async (userId) => {
+  const t = await sequelize.transaction();
+
+  try {
+    const posts = await BlogPost.findAll({ where: { userId } });
+
+    await Promise.all(
+      posts.map((post) => (
+        PostCategory.destroy({ where: { postId: post.id } }, { transaction: t }))),
+    );
+
+    await BlogPost.destroy({ where: { userId } }, { transaction: t });
+  
+    await User.destroy({ where: { id: userId } }, { transaction: t });
+
+    await t.commit();
+  } catch (err) {
+    await t.rollback();
+    throw generateError(null, 'Operation failed');
+  }
+};
+
 module.exports = {
   getAllUsers,
   getUserById,
   create,
+  exclude,
 };
