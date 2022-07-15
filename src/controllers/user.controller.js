@@ -23,8 +23,17 @@ const create = async (req, res) => {
   res.status(httpStatus.CREATED).json({ token });
 };
 
+const exclude = async (req, res) => {
+  const { id } = req.user;
+
+  await userService.exclude(id);
+
+  res.status(httpStatus.NO_CONTENT).end();
+};
+
 module.exports = {
   getAllUsers,
   getUserById,
   create,
+  exclude,
 };
