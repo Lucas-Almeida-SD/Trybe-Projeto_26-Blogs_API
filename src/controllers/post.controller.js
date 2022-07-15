@@ -6,6 +6,15 @@ const getAllPosts = async (req, res) => {
 
   res.status(httpStatus.OK).json(posts);
 };
+
+const getPostBySearch = async (req, res) => {
+  const { q: search } = req.query;
+
+  const posts = await postService.getPostBySearch(search);
+
+  res.status(httpStatus.OK).json(posts);
+};
+
 const getPostById = async (req, res) => {
   const { id } = req.params;
 
@@ -44,6 +53,7 @@ const exclude = async (req, res) => {
 
 module.exports = {
   getAllPosts,
+  getPostBySearch,
   getPostById,
   create,
   update,
