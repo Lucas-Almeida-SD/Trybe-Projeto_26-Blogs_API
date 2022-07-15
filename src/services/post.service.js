@@ -1,9 +1,11 @@
 const Sequelize = require('sequelize');
+
 const { BlogPost, Category, PostCategory, User } = require('../database/models');
 const generateError = require('../helpers/generateError');
 const httpStatus = require('../helpers/httpStatus');
 const config = require('../database/config/config');
 
+const { Op } = Sequelize;
 const sequelize = new Sequelize(config.development);
 
 const validatePost = (title, content, categoryIds) => {
@@ -31,6 +33,23 @@ const getAllPosts = async () => {
     include: [
       { model: User, as: 'user', attributes: ['id', 'displayName', 'email', 'image'] },
       { model: Category, as: 'categories', through: { attributes: [] } }],
+  });
+
+  return posts;
+};
+
+const getPostBySearch = async (search) => {
+  const posts = await BlogPost.findAll({
+    where: { 
+      [Op.or]: [
+        { title: { [Op.substring]: search } }, 
+        { content: { [Op.substring]: search } },
+      ],
+    },
+    include: [
+      { model: User, as: 'user', attributes: ['id', 'displayName', 'email', 'image'] },
+      { model: Category, as: 'categories', through: { attributes: [] } },
+    ],
   });
 
   return posts;
@@ -68,6 +87,7 @@ const create = async (userId, title, content, categoryIds) => {
     return post;
   } catch (err) {
     await t.rollback();
+
     throw generateError(null, 'Operation failed');
   }
 };
@@ -92,11 +112,24 @@ const exclude = async (postId, userId) => {
 
   if (post.user.id !== userId) throw generateError(httpStatus.UNAUTHORIZED, 'Unauthorized user');
 
-  await BlogPost.destroy({ where: { id: postId } });
+  const t = await sequelize.transaction();
+
+  try {
+    await PostCategory.destroy({ where: { postId } }, { transaction: t });
+
+    await BlogPost.destroy({ where: { id: postId } }, { transaction: t });
+
+    await t.commit();
+  } catch (err) {
+    await t.rollback();
+
+    throw generateError(null, 'Operation failed');
+  }
 };
 
 module.exports = {
   getAllPosts,
+  getPostBySearch,
   getPostById,
   create,
   update,
