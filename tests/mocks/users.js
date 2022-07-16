@@ -17,7 +17,13 @@ const correctBodyOfLoginRequest = {
   password: '123456',
 };
 
+const incorrectBodyOfLoginRequest = {
+  email: 'lucas@teste.com',
+  password: '123456',
+};
+
 module.exports = {
   allUsers,
   correctBodyOfLoginRequest,
+  incorrectBodyOfLoginRequest,
 };
