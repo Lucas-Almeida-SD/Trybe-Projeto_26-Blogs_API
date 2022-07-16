@@ -22,8 +22,56 @@ const incorrectBodyOfLoginRequest = {
   password: '123456',
 };
 
+const correctUserReqBody = {
+  "displayName": "Brett Wiltshire",
+  "email": "brett@email.com",
+  "password": "123456",
+  "image": "http://4.bp.blogspot.com/_YA50adQ-7vQ/S1gfR_6ufpI/AAAAAAAAAAk/1ErJGgRWZDg/S45/brett.png"
+}
+
+const incorrectDisplayNameUserReqBody = {
+  "displayName": "Brett",
+  "email": "brett@email.com",
+  "password": "123456",
+  "image": "http://4.bp.blogspot.com/_YA50adQ-7vQ/S1gfR_6ufpI/AAAAAAAAAAk/1ErJGgRWZDg/S45/brett.png"
+};
+
+const incorrectEmailUserReqBody = {
+  "displayName": "Brett Wiltshire",
+  "email": "@email.com",
+  "password": "123456",
+  "image": "http://4.bp.blogspot.com/_YA50adQ-7vQ/S1gfR_6ufpI/AAAAAAAAAAk/1ErJGgRWZDg/S45/brett.png"
+}
+
+const incorrectPasswordUserReqBody = {
+  "displayName": "Brett Wiltshire",
+  "email": "brett@email.com",
+  "password": "12345",
+  "image": "http://4.bp.blogspot.com/_YA50adQ-7vQ/S1gfR_6ufpI/AAAAAAAAAAk/1ErJGgRWZDg/S45/brett.png"
+}
+
+const incorrectImageUserReqBody = {
+  "displayName": "Brett Wiltshire",
+  "email": "brett@email.com",
+  "password": "123456",
+  "image": ""
+}
+
+const emailAlreadyExistingUserReqBody = {
+  "displayName": "Brett Wiltshire",
+  "email": "lewishamilton@gmail.com",
+  "password": "123456",
+  "image": "http://4.bp.blogspot.com/_YA50adQ-7vQ/S1gfR_6ufpI/AAAAAAAAAAk/1ErJGgRWZDg/S45/brett.png"
+};
+
 module.exports = {
   allUsers,
   correctBodyOfLoginRequest,
   incorrectBodyOfLoginRequest,
+  correctUserReqBody,
+  incorrectDisplayNameUserReqBody,
+  incorrectEmailUserReqBody,
+  incorrectPasswordUserReqBody,
+  incorrectImageUserReqBody,
+  emailAlreadyExistingUserReqBody
 };
