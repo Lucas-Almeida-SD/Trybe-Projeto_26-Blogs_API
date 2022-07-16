@@ -1,3 +1,5 @@
+const invalidToken = { authorization: 'invalid_token' };
+
 const allUsers = [{
   id: 1,
   displayName: 'Lewis Hamilton',
@@ -65,6 +67,7 @@ const emailAlreadyExistingUserReqBody = {
 };
 
 module.exports = {
+  invalidToken,
   allUsers,
   correctBodyOfLoginRequest,
   incorrectBodyOfLoginRequest,
