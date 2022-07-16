@@ -3,7 +3,7 @@ const chaiHttp = require('chai-http');
 const shell = require('shelljs');
 
 const server = require('../../../src/api');
-const sequelizeCommands = require('../../helpers/sequelizeCommands');
+const sequelizeCLI = require('../../helpers/sequelizeCLI');
 const usersMock = require('../../mocks/users');
 
 chai.use(chaiHttp);
@@ -13,10 +13,10 @@ const { expect } = chai;
 describe('Testes da rota GET /user', () => {
 
   before(() => {
-    shell.exec(sequelizeCommands.drop);
-    shell.exec(sequelizeCommands.create);
-    shell.exec(sequelizeCommands.migrate);
-    shell.exec(sequelizeCommands.seed);
+    shell.exec(sequelizeCLI.drop);
+    shell.exec(sequelizeCLI.create);
+    shell.exec(sequelizeCLI.migrate);
+    shell.exec(sequelizeCLI.seed);
   });
 
   let response; 
