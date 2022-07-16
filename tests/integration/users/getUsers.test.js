@@ -31,7 +31,7 @@ describe('Testes da rota GET /user', () => {
       expect(response).to.have.status(401);
     });
 
-    it('Deve retornar mensagem de erro no corpo da response', () => {
+    it('Deve retornar mensagem de erro "Token not found" no corpo da response', () => {
       expect(response.body).to.be.eqls({ message: 'Token not found' });
     });
   });
@@ -39,14 +39,14 @@ describe('Testes da rota GET /user', () => {
   describe('Será validado que não é possível listar usuários com o token inválido', () => {
 
     before(async() => {
-      response = await chai.request(server).get('/user').set({ authorization: 'token_inválido' });
+      response = await chai.request(server).get('/user').set(usersMock.invalidToken);
     });
 
     it('Deve retornar código de status "401"', () => {
       expect(response).to.have.status(401);
     });
 
-    it('Deve retornar mensagem de erro no corpo da response', () => {
+    it('Deve retornar mensagem de erro "Expired or invalid token" no corpo da response', () => {
       expect(response.body).to.be.eqls({ message: 'Expired or invalid token' });
     });
   });
@@ -54,9 +54,9 @@ describe('Testes da rota GET /user', () => {
   describe('Será validado que é possível listar todos os usuários', () => {
 
     before(async() => {
-      const tokenResponse = await chai.request(server).post('/login').send(usersMock.correctBodyOfLoginRequest);
+      const loginRespose = await chai.request(server).post('/login').send(usersMock.correctBodyOfLoginRequest);
 
-      response = await chai.request(server).get('/user').set({ authorization: tokenResponse.body.token });
+      response = await chai.request(server).get('/user').set({ authorization: loginRespose.body.token });
     });
 
     it('Deve retornar código de status "200"', () => {
