@@ -38,7 +38,7 @@ describe('Testes da rota GET /user/:id', () => {
   describe('Será validado que não é possível listar um determinado usuário com o token inválido', () => {
 
     before(async () => {
-      response = await chai.request(server).get('/user/1').set({ authorization: 'token_inválido' });
+      response = await chai.request(server).get('/user/1').set(usersMock.invalidToken);
     });
 
     it('Deve responder com código de status "401"', () => {
@@ -55,9 +55,9 @@ describe('Testes da rota GET /user/:id', () => {
   describe('Será validado que não é possível listar um usuário inexistente', () => {
 
     before(async () => {
-      const loginResposeBody = await chai.request(server).post('/login').send(usersMock.correctBodyOfLoginRequest);
+      const loginRespose = await chai.request(server).post('/login').send(usersMock.correctBodyOfLoginRequest);
       
-      response = await chai.request(server).get('/user/9999').set({ authorization: loginResposeBody.body.token });
+      response = await chai.request(server).get('/user/9999').set({ authorization: loginRespose.body.token });
     });
 
     it('Deve responder com código de status "404"', () => {
@@ -74,9 +74,9 @@ describe('Testes da rota GET /user/:id', () => {
   describe('Será validado que é possível listar um usuário específico com sucesso', () => {
 
     before(async () => {
-      const loginResposeBody = await chai.request(server).post('/login').send(usersMock.correctBodyOfLoginRequest);
+      const loginRespose = await chai.request(server).post('/login').send(usersMock.correctBodyOfLoginRequest);
       
-      response = await chai.request(server).get('/user/1').set({ authorization: loginResposeBody.body.token });
+      response = await chai.request(server).get('/user/1').set({ authorization: loginRespose.body.token });
     });
 
     it('Deve responder com código de status "200"', () => {
