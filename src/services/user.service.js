@@ -14,10 +14,11 @@ const validateEmail = (email) => (email && /\S+@\S+\.com/gi.test(email));
 
 const validatePassword = (password) => (password && password.length >= 6);
 
-const validateUser = (displayName, email, password) => {
+const validateUser = (displayName, email, password, image) => {
   const displayNameMessage = '"displayName" length must be at least 8 characters long';
   const emailMessage = '"email" must be a valid email';
   const passwordMessage = '"password" length must be at least 6 characters long';
+  const imageMessage = '"image" is required';
 
   switch (true) {
     case (!validateDisplayName(displayName)):
@@ -26,6 +27,8 @@ const validateUser = (displayName, email, password) => {
       throw generateError(httpStatus.BAD_REQUEST, emailMessage);
     case (!validatePassword(password)):
       throw generateError(httpStatus.BAD_REQUEST, passwordMessage);
+    case (!image):
+      throw generateError(httpStatus.BAD_REQUEST, imageMessage);
     default:
       return true;
   }
@@ -49,7 +52,7 @@ const getUserById = async (id) => {
 };
 
 const create = async (displayName, email, password, image) => {
-  validateUser(displayName, email, password);
+  validateUser(displayName, email, password, image);
 
   const checkIfEmailExists = await User.findOne({ where: { email } });
 
