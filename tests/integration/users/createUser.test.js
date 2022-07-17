@@ -121,10 +121,10 @@ describe('Testes da rota POST /user', () => {
 
       const checkToken = validateToken(token);
 
-      expect(checkToken).to.have.property('id');
-      expect(checkToken).to.have.property('displayName');
-      expect(checkToken).to.have.property('email');
-      expect(checkToken).to.have.property('image');
+      expect(checkToken).to.have.property('id', 3);
+      expect(checkToken).to.have.property('displayName', usersMock.correctUserReqBody.displayName);
+      expect(checkToken).to.have.property('email', usersMock.correctUserReqBody.email);
+      expect(checkToken).to.have.property('image', usersMock.correctUserReqBody.image);
       expect(checkToken).not.to.have.property('password');
     });
   });
