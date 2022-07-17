@@ -55,9 +55,37 @@ const nonExistentCategoryPostReqBody = {
   categoryIds: [9999],
 };
 
+const updatePostReqBody = {
+  title: "Latest updates, August 1st",
+  content: "The whole text for the blog post goes here in this key"
+}
+
+const updatedPostResBody = {
+  id: 1,
+  title: "Latest updates, August 1st",
+  content: "The whole text for the blog post goes here in this key",
+  userId: 1,
+  published: "2011-08-01T19:58:00.000Z",
+  updated: "2011-08-01T19:58:51.000Z",
+  user: {
+    id: 1,
+    displayName: "Lewis Hamilton",
+    email: "lewishamilton@gmail.com",
+    image: "https://upload.wikimedia.org/wikipedia/commons/1/18/Lewis_Hamilton_2016_Malaysia_2.jpg"
+  },
+  categories: [
+    {
+      id: 1,
+      name: "Inovação"
+    }
+  ]
+}
+
 module.exports = {
   invalidToken,
   allPosts,
   correctPostReqBody,
   nonExistentCategoryPostReqBody,
+  updatePostReqBody,
+  updatedPostResBody,
 };
