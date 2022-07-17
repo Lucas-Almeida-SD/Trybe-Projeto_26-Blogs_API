@@ -101,7 +101,7 @@ describe('Testes da rota POST /categories', () => {
     });
 
     it('Deve retornar a categoria criada no corpo da response', () => {
-      expect(response.body).to.have.property('id');
+      expect(response.body).to.have.property('id', 3);
       expect(response.body).to.have.property('name', categoryMock.correctCategoryReqBody.name);
     });
   });
