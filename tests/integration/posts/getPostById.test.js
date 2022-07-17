@@ -9,7 +9,7 @@ const { correctBodyOfLoginRequest } = require('../../mocks/users');
 chai.use(chaiHttp);
 const { expect } = chai;
 
-describe.only('Testes da rota "GET /post/:id"', () => {
+describe('Testes da rota "GET /post/:id"', () => {
   let response;
 
   before(() => {
