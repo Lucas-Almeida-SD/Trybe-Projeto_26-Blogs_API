@@ -4,8 +4,6 @@ const swaggerFile = require('../swagger_output.json');
 const routers = require('./routers');
 const errorMiddleware = require('./middlewares/errorMiddleware');
 
-// ...
-
 const app = express();
 
 app.use(express.json());
@@ -18,8 +16,4 @@ app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 app.use(errorMiddleware);
 
-// ...
-
-// É importante exportar a constante `app`,
-// para que possa ser utilizada pelo arquivo `src/server.js`
 module.exports = app;
