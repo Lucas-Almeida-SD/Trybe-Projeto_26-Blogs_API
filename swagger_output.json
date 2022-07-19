@@ -1,0 +1,694 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "REST API",
+    "description": "This API is a blog management system in which it has information about users, blogposts and categories, having operations to create, read, update and delete data from these entities."
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/login": {
+      "post": {
+        "description": "Through the login endpoint it is possible to obtain the authentication token so that the user has access to the other endpoints.",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Request body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email" : { "type": "string", "example":  "lewishamilton@gmail.com"},
+                "password" : { "type": "string", "example":  "123456"}
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "examples": {
+              "application/json": {
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoxLCJkaXNwbGF5TmFtZSI6Ikxld2lzIEhhbWlsdG9uIiwiZW1haWwiOiJsZXdpc2hhbWlsdG9uQGdtYWlsLmNvbSIsImltYWdlIjoiaHR0cHM6Ly91cGxvYWQud2lraW1lZGlhLm9yZy93aWtpcGVkaWEvY29tbW9ucy8xLzE4L0xld2lzX0hhbWlsdG9uXzIwMTZfTWFsYXlzaWFfMi5qcGcifSwiaWF0IjoxNjU4MTk0MDg5LCJleHAiOjE2NTgxOTc2ODl9.RQjjbnSXBmQGWYzzheCNrCvGsB_1ve8uiSr0RsYDxuQ"
+              }
+            }
+          },
+          "400": {
+            "description": "BAD REQUEST",
+            "examples": {
+              "application/json": {
+                "message{1}": "Some required fields are missing",
+                "message{2}": "Invalid fields"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user": {
+      "get": {
+        "description": "Read all users in the MySQL database.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Authentication token",
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoxLCJkaXNwbGF5TmFtZSI6Ikxld2lzIEhhbWlsdG9uIiwiZW1haWwiOiJsZXdpc2hhbWlsdG9uQGdtYWlsLmNvbSIsImltYWdlIjoiaHR0cHM6Ly91cGxvYWQud2lraW1lZGlhLm9yZy93aWtpcGVkaWEvY29tbW9ucy8xLzE4L0xld2lzX0hhbWlsdG9uXzIwMTZfTWFsYXlzaWFfMi5qcGcifSwiaWF0IjoxNjU4MTk0MDg5LCJleHAiOjE2NTgxOTc2ODl9.RQjjbnSXBmQGWYzzheCNrCvGsB_1ve8uiSr0RsYDxuQ"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "examples": {
+              "application/json": [
+                {
+                  "id": 1,
+                  "displayName": "Lewis Hamilton",
+                  "email": "lewishamilton@gmail.com",
+                  "image": "https://upload.wikimedia.org/wikipedia/commons/1/18/Lewis_Hamilton_2016_Malaysia_2.jpg"
+                },
+                {
+                  "id": 2,
+                  "displayName": "Michael Schumacher",
+                  "email": "MichaelSchumacher@gmail.com",
+                  "image": "https://sportbuzz.uol.com.br/media/_versions/gettyimages-52491565_widelg.jpg"
+                }
+              ]
+            }
+          },
+          "401": {
+            "description": "UNAUTHORIZED",
+            "examples": {
+              "application/json": {
+                "message{1}": "Token not found",
+                "message{2}": "Expired or invalid token"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Create a new user in the MySQL database",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Request body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "displayName": { "type": "string", "example": "Brett Wiltshire" },
+                "email": { "type": "string", "example": "brett@email.com" },
+                "password": { "type": "string", "example": "123456" },
+                "image": { "type": "string", "example": "http://4.bp.blogspot.com/_YA50adQ-7vQ/S1gfR_6ufpI/AAAAAAAAAAk/1ErJGgRWZDg/S45/brett.png" }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "CREATE",
+            "examples": {
+              "application/json": {
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjo1LCJkaXNwbGF5TmFtZSI6InVzdWFyaW8gZGUgdGVzdGUiLCJlbWFpbCI6InRlc3RlQGVtYWlsLmNvbSIsImltYWdlIjoibnVsbCJ9LCJpYXQiOjE2MjAyNDQxODcsImV4cCI6MTYyMDY3NjE4N30.Roc4byj6mYakYqd9LTCozU1hd9k_Vw5IWKGL4hcCVG8"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/{id}": {
+      "get": {
+        "description": "Reads the user corresponding to the ID in the MySQL database.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Authentication token",
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoxLCJkaXNwbGF5TmFtZSI6Ikxld2lzIEhhbWlsdG9uIiwiZW1haWwiOiJsZXdpc2hhbWlsdG9uQGdtYWlsLmNvbSIsImltYWdlIjoiaHR0cHM6Ly91cGxvYWQud2lraW1lZGlhLm9yZy93aWtpcGVkaWEvY29tbW9ucy8xLzE4L0xld2lzX0hhbWlsdG9uXzIwMTZfTWFsYXlzaWFfMi5qcGcifSwiaWF0IjoxNjU4MTk0MDg5LCJleHAiOjE2NTgxOTc2ODl9.RQjjbnSXBmQGWYzzheCNrCvGsB_1ve8uiSr0RsYDxuQ"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "description": "User ID",
+            "type": "integer",
+            "example": 1,
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "examples": {
+              "application/json": {
+                "id": 1,
+                "displayName": "Lewis Hamilton",
+                "email": "lewishamilton@gmail.com",
+                "image": "https://upload.wikimedia.org/wikipedia/commons/1/18/Lewis_Hamilton_2016_Malaysia_2.jpg"
+              }
+            }
+          },
+          "401": {
+            "description": "UNAUTHORIZED",
+            "examples": {
+              "application/json": {
+                "message{1}": "Token not found",
+                "message{2}": "Expired or invalid token"
+              }
+            }
+          },
+          "404": {
+            "description": "NOT FOUND",
+            "examples": {
+              "application/json": {
+                "message": "User does not exist"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/me": {
+      "delete": {
+        "description": "Delete the user corresponding to the ID in the MySQL database.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Authentication token",
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoxLCJkaXNwbGF5TmFtZSI6Ikxld2lzIEhhbWlsdG9uIiwiZW1haWwiOiJsZXdpc2hhbWlsdG9uQGdtYWlsLmNvbSIsImltYWdlIjoiaHR0cHM6Ly91cGxvYWQud2lraW1lZGlhLm9yZy93aWtpcGVkaWEvY29tbW9ucy8xLzE4L0xld2lzX0hhbWlsdG9uXzIwMTZfTWFsYXlzaWFfMi5qcGcifSwiaWF0IjoxNjU4MTk0MDg5LCJleHAiOjE2NTgxOTc2ODl9.RQjjbnSXBmQGWYzzheCNrCvGsB_1ve8uiSr0RsYDxuQ"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "NO CONTENT"
+          },
+          "401": {
+            "description": "UNAUTHORIZED",
+            "examples": {
+              "application/json": {
+                "message{1}": "Token not found",
+                "message{2}": "Expired or invalid token"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/categories": {
+      "get": {
+        "description": "Reads all categories in the MySQL database.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Authentication token",
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoxLCJkaXNwbGF5TmFtZSI6Ikxld2lzIEhhbWlsdG9uIiwiZW1haWwiOiJsZXdpc2hhbWlsdG9uQGdtYWlsLmNvbSIsImltYWdlIjoiaHR0cHM6Ly91cGxvYWQud2lraW1lZGlhLm9yZy93aWtpcGVkaWEvY29tbW9ucy8xLzE4L0xld2lzX0hhbWlsdG9uXzIwMTZfTWFsYXlzaWFfMi5qcGcifSwiaWF0IjoxNjU4MTk0MDg5LCJleHAiOjE2NTgxOTc2ODl9.RQjjbnSXBmQGWYzzheCNrCvGsB_1ve8uiSr0RsYDxuQ"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "examples": {
+              "application/json": [
+                {
+                    "id": 1,
+                    "name": "Inovação"
+                },
+                {
+                    "id": 2,
+                    "name": "Escola"
+                }
+              ]
+            }
+          },
+          "401": {
+            "description": "UNAUTHORIZED",
+            "examples": {
+              "application/json": {
+                "message{1}": "Token not found",
+                "message{2}": "Expired or invalid token"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Create a new category in the MySQL database",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Authentication token",
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoxLCJkaXNwbGF5TmFtZSI6Ikxld2lzIEhhbWlsdG9uIiwiZW1haWwiOiJsZXdpc2hhbWlsdG9uQGdtYWlsLmNvbSIsImltYWdlIjoiaHR0cHM6Ly91cGxvYWQud2lraW1lZGlhLm9yZy93aWtpcGVkaWEvY29tbW9ucy8xLzE4L0xld2lzX0hhbWlsdG9uXzIwMTZfTWFsYXlzaWFfMi5qcGcifSwiaWF0IjoxNjU4MTk0MDg5LCJleHAiOjE2NTgxOTc2ODl9.RQjjbnSXBmQGWYzzheCNrCvGsB_1ve8uiSr0RsYDxuQ"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Request body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": { "type": "string", "example": "Tecnologia" }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "CREATE",
+            "examples": {
+              "application/json": {
+                "id": 3,
+                "name": "Tecnologia"
+              }
+            }
+          },
+          "400": {
+            "description": "BAD REQUEST",
+            "examples": {
+              "application/json": {
+                "message": "\"name\" is required"
+              }
+            }
+          },
+          "401": {
+            "description": "UNAUTHORIZED",
+            "examples": {
+              "application/json": {
+                "message{1}": "Token not found",
+                "message{2}": "Expired or invalid token"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/post": {
+      "get": {
+        "description": "Reads all posts in the MySQL database.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Authentication token",
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoxLCJkaXNwbGF5TmFtZSI6Ikxld2lzIEhhbWlsdG9uIiwiZW1haWwiOiJsZXdpc2hhbWlsdG9uQGdtYWlsLmNvbSIsImltYWdlIjoiaHR0cHM6Ly91cGxvYWQud2lraW1lZGlhLm9yZy93aWtpcGVkaWEvY29tbW9ucy8xLzE4L0xld2lzX0hhbWlsdG9uXzIwMTZfTWFsYXlzaWFfMi5qcGcifSwiaWF0IjoxNjU4MTk0MDg5LCJleHAiOjE2NTgxOTc2ODl9.RQjjbnSXBmQGWYzzheCNrCvGsB_1ve8uiSr0RsYDxuQ"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "examples": {
+              "application/json": [
+                {
+                  "id": 1,
+                  "title": "Post do Ano",
+                  "content": "Melhor post do ano",
+                  "userId": 1,
+                  "published": "2011-08-01T19:58:00.000Z",
+                  "updated": "2011-08-01T19:58:51.000Z",
+                  "user": {
+                    "id": 1,
+                    "displayName": "Lewis Hamilton",
+                    "email": "lewishamilton@gmail.com",
+                    "image": "https://upload.wikimedia.org/wikipedia/commons/1/18/Lewis_Hamilton_2016_Malaysia_2.jpg"
+                  },
+                  "categories": [
+                    {
+                      "id": 1,
+                      "name": "Inovação"
+                    }
+                  ]
+                },
+                {
+                  "id": 2,
+                  "title": "Vamos que vamos",
+                  "content": "Foguete não tem ré",
+                  "userId": 1,
+                  "published": "2011-08-01T19:58:00.000Z",
+                  "updated": "2011-08-01T19:58:51.000Z",
+                  "user": {
+                    "id": 1,
+                    "displayName": "Lewis Hamilton",
+                    "email": "lewishamilton@gmail.com",
+                    "image": "https://upload.wikimedia.org/wikipedia/commons/1/18/Lewis_Hamilton_2016_Malaysia_2.jpg"
+                  },
+                  "categories": [
+                    {
+                      "id": 2,
+                      "name": "Escola"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          "401": {
+            "description": "UNAUTHORIZED",
+            "examples": {
+              "application/json": {
+                "message{1}": "Token not found",
+                "message{2}": "Expired or invalid token"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Create a new post in the MySQL database",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Authentication token",
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoxLCJkaXNwbGF5TmFtZSI6Ikxld2lzIEhhbWlsdG9uIiwiZW1haWwiOiJsZXdpc2hhbWlsdG9uQGdtYWlsLmNvbSIsImltYWdlIjoiaHR0cHM6Ly91cGxvYWQud2lraW1lZGlhLm9yZy93aWtpcGVkaWEvY29tbW9ucy8xLzE4L0xld2lzX0hhbWlsdG9uXzIwMTZfTWFsYXlzaWFfMi5qcGcifSwiaWF0IjoxNjU4MTk0MDg5LCJleHAiOjE2NTgxOTc2ODl9.RQjjbnSXBmQGWYzzheCNrCvGsB_1ve8uiSr0RsYDxuQ"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Request body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": { "type": "string", "example": "Latest updates, August 1st" },
+                "content": { "type": "string", "example": "The whole text for the blog post goes here in this key" },
+                "categoryIds": { "type": "array", "example": [1, 2] }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "CREATE",
+            "examples": {
+              "application/json": {
+                "id": 3,
+                "title": "Latest updates, August 1st",
+                "content": "The whole text for the blog post goes here in this key",
+                "userId": 1,
+                "updated": "2022-05-18T18:00:01.196Z",
+                "published": "2022-05-18T18:00:01.196Z"
+              }
+            }
+          },
+          "400": {
+            "description": "BAD REQUEST",
+            "examples": {
+              "application/json": {
+                "message{1}": "Some required fields are missing",
+                "message{2}": "\"categoryIds\" not found"
+              }
+            }
+          },
+          "401": {
+            "description": "UNAUTHORIZED",
+            "examples": {
+              "application/json": {
+                "message{1}": "Token not found",
+                "message{2}": "Expired or invalid token"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/post/search": {
+      "get": {
+        "description": "Reads the posts that match the query in the MySQL database.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Authentication token",
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoxLCJkaXNwbGF5TmFtZSI6Ikxld2lzIEhhbWlsdG9uIiwiZW1haWwiOiJsZXdpc2hhbWlsdG9uQGdtYWlsLmNvbSIsImltYWdlIjoiaHR0cHM6Ly91cGxvYWQud2lraW1lZGlhLm9yZy93aWtpcGVkaWEvY29tbW9ucy8xLzE4L0xld2lzX0hhbWlsdG9uXzIwMTZfTWFsYXlzaWFfMi5qcGcifSwiaWF0IjoxNjU4MTk0MDg5LCJleHAiOjE2NTgxOTc2ODl9.RQjjbnSXBmQGWYzzheCNrCvGsB_1ve8uiSr0RsYDxuQ"
+          },
+          {
+            "in": "query",
+            "name": "q",
+            "description": "Post title or content",
+            "type": "string",
+            "example": "post do"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "examples": {
+              "application/json": [
+                [
+                  {
+                    "id": 1,
+                    "title": "Post do Ano",
+                    "content": "Melhor post do ano",
+                    "userId": 1,
+                    "published": "2011-08-01T19:58:00.000Z",
+                    "updated": "2011-08-01T19:58:51.000Z",
+                    "user": {
+                      "id": 1,
+                      "displayName": "Lewis Hamilton",
+                      "email": "lewishamilton@gmail.com",
+                      "image": "https://upload.wikimedia.org/wikipedia/commons/1/18/Lewis_Hamilton_2016_Malaysia_2.jpg"
+                    },
+                    "categories": [
+                      {
+                        "id": 1,
+                        "name": "Inovação"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 2,
+                    "title": "Vamos que vamos",
+                    "content": "Foguete não tem ré",
+                    "userId": 1,
+                    "published": "2011-08-01T19:58:00.000Z",
+                    "updated": "2011-08-01T19:58:51.000Z",
+                    "user": {
+                      "id": 1,
+                      "displayName": "Lewis Hamilton",
+                      "email": "lewishamilton@gmail.com",
+                      "image": "https://upload.wikimedia.org/wikipedia/commons/1/18/Lewis_Hamilton_2016_Malaysia_2.jpg"
+                    },
+                    "categories": [
+                      {
+                        "id": 2,
+                        "name": "Escola"
+                      }
+                    ]
+                  }
+                ]
+              ]
+            }
+          },
+          "401": {
+            "description": "UNAUTHORIZED",
+            "examples": {
+              "application/json": {
+                "message{1}": "Token not found",
+                "message{2}": "Expired or invalid token"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/post/{id}": {
+      "get": {
+        "description": "Reads the post corresponding to the ID in the MySQL database.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Authentication token",
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoxLCJkaXNwbGF5TmFtZSI6Ikxld2lzIEhhbWlsdG9uIiwiZW1haWwiOiJsZXdpc2hhbWlsdG9uQGdtYWlsLmNvbSIsImltYWdlIjoiaHR0cHM6Ly91cGxvYWQud2lraW1lZGlhLm9yZy93aWtpcGVkaWEvY29tbW9ucy8xLzE4L0xld2lzX0hhbWlsdG9uXzIwMTZfTWFsYXlzaWFfMi5qcGcifSwiaWF0IjoxNjU4MTk0MDg5LCJleHAiOjE2NTgxOTc2ODl9.RQjjbnSXBmQGWYzzheCNrCvGsB_1ve8uiSr0RsYDxuQ"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Post ID",
+            "type": "integer",
+            "example": 1,
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "examples": {
+              "application/json": {
+                "id": 1,
+                "title": "Post do Ano",
+                "content": "Melhor post do ano",
+                "userId": 1,
+                "published": "2011-08-01T19:58:00.000Z",
+                "updated": "2011-08-01T19:58:51.000Z",
+                "user": {
+                  "id": 1,
+                  "displayName": "Lewis Hamilton",
+                  "email": "lewishamilton@gmail.com",
+                  "image": "https://upload.wikimedia.org/wikipedia/commons/1/18/Lewis_Hamilton_2016_Malaysia_2.jpg"
+                },
+                "categories": [
+                  {
+                    "id": 1,
+                    "name": "Inovação"
+                  }
+                ]
+              }
+            }
+          },
+          "401": {
+            "description": "UNAUTHORIZED",
+            "examples": {
+              "application/json": {
+                "message{1}": "Token not found",
+                "message{2}": "Expired or invalid token"
+              }
+            }
+          },
+          "404": {
+            "description": "NOT FOUND",
+            "examples": {
+              "application/json": {
+                "message": "Post does not exist"
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "description": "Update the post corresponding to the ID in the MySQL database.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Authentication token",
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoxLCJkaXNwbGF5TmFtZSI6Ikxld2lzIEhhbWlsdG9uIiwiZW1haWwiOiJsZXdpc2hhbWlsdG9uQGdtYWlsLmNvbSIsImltYWdlIjoiaHR0cHM6Ly91cGxvYWQud2lraW1lZGlhLm9yZy93aWtpcGVkaWEvY29tbW9ucy8xLzE4L0xld2lzX0hhbWlsdG9uXzIwMTZfTWFsYXlzaWFfMi5qcGcifSwiaWF0IjoxNjU4MTk0MDg5LCJleHAiOjE2NTgxOTc2ODl9.RQjjbnSXBmQGWYzzheCNrCvGsB_1ve8uiSr0RsYDxuQ"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Post ID",
+            "type": "integer",
+            "example": 1,
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Request body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": { "type": "string", "example": "Latest updates, August 1st" },
+                "content": { "type": "string", "example": "The whole text for the blog post goes here in this key" }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "examples": {
+              "application/json": {
+                "id": 1,
+                "title": "Latest updates, August 1st",
+                "content": "The whole text for the blog post goes here in this key",
+                "userId": 1,
+                "published": "2011-08-01T19:58:00.000Z",
+                "updated": "2011-08-01T19:58:51.000Z",
+                "user": {
+                  "id": 1,
+                  "displayName": "Lewis Hamilton",
+                  "email": "lewishamilton@gmail.com",
+                  "image": "https://upload.wikimedia.org/wikipedia/commons/1/18/Lewis_Hamilton_2016_Malaysia_2.jpg"
+                },
+                "categories": [
+                  {
+                    "id": 1,
+                    "name": "Inovação"
+                  }
+                ]
+              }
+            }
+          },
+          "400": {
+            "description": "BAD REQUEST",
+            "examples": {
+              "application/json": {
+                "message": "Some required fields are missing"
+              }
+            }
+          },
+          "401": {
+            "description": "UNAUTHORIZED",
+            "examples": {
+              "application/json": {
+                "message{1}": "Token not found",
+                "message{2}": "Expired or invalid token",
+                "message{3}": "Unauthorized user"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Delete the post corresponding to the ID in the MySQL database.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Authentication token",
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoxLCJkaXNwbGF5TmFtZSI6Ikxld2lzIEhhbWlsdG9uIiwiZW1haWwiOiJsZXdpc2hhbWlsdG9uQGdtYWlsLmNvbSIsImltYWdlIjoiaHR0cHM6Ly91cGxvYWQud2lraW1lZGlhLm9yZy93aWtpcGVkaWEvY29tbW9ucy8xLzE4L0xld2lzX0hhbWlsdG9uXzIwMTZfTWFsYXlzaWFfMi5qcGcifSwiaWF0IjoxNjU4MTk0MDg5LCJleHAiOjE2NTgxOTc2ODl9.RQjjbnSXBmQGWYzzheCNrCvGsB_1ve8uiSr0RsYDxuQ"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Post ID",
+            "type": "integer",
+            "example": 1,
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description":"NO CONTENT"
+          },
+          "401": {
+            "description": "UNAUTHORIZED",
+            "examples": {
+              "application/json": {
+                "message{1}": "Token not found",
+                "message{2}": "Expired or invalid token",
+                "message{3}": "Unauthorized user"
+              }
+            }
+          },
+          "404": {
+            "description": "NOT FOUND",
+            "examples": {
+              "application/json": {
+                "message": "Post does not exist"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
