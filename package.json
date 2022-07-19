@@ -16,16 +16,21 @@
     "morgan": "^1.10.0",
     "mysql2": "2.1.0",
     "sequelize": "6.3.4",
-    "shelljs": "0.8.4"
+    "shelljs": "0.8.4",
+    "swagger-autogen": "^2.21.5",
+    "swagger-ui-express": "^4.5.0"
   },
   "main": "src/server.js",
   "scripts": {
     "start": "node .",
     "drop": "npx sequelize-cli db:drop",
+    "create": "npx sequelize-cli db:create",
+    "migrate": "npx sequelize-cli db:migrate",
     "seed": "npx sequelize-cli db:seed:all",
     "test": "NODE_ENV=test mocha ./tests/integration/**/*$NAME*.test.js --timeout 0 --exit",
     "debug": "nodemon .",
-    "lint": "eslint --no-inline-config --no-error-on-unmatched-pattern -c .eslintrc.json ."
+    "lint": "eslint --no-inline-config --no-error-on-unmatched-pattern -c .eslintrc.json .",
+    "swagger-autogen": "node swagger.js"
   },
   "devDependencies": {
     "chai": "^4.3.6",
