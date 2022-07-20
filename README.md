@@ -2,7 +2,7 @@
 
 Esse projeto foi realizado para exercitar o que foi aprendido no Bloco 24 do Módulo de Back End do curso da [Trybe](https://www.betrybe.com/), no qual foi sobre `ORM (Object Relational Mapping)`, `JWT` e `testes de integração`.
 
-Nesse projeto foi desenvolvida uma `REST API` utilizando arquitetura de software `MSC` através do `Node.js` e `Express`. Além disso, foi utilizado o `Sequelize` como `ORM (Object-Relational Mapper) - Mapeamento Objeto-Relacional`, ou seja, através dele foi possível criar o banco de dados, criar, popular e relacionar tabelas e também manipular os dados do database, realizando operações de `CRUD` (create, read, update e delete) utilizando apenas métodos JavaScript.
+Nesse projeto foi desenvolvida uma `REST API` utilizando arquitetura de software `MSC` através do `Node.js` e `Express`. Além disso, foi utilizado o `Sequelize` como `ORM (Object-Relational Mapper) - Mapeador Objeto-Relacional`, ou seja, através dele foi possível criar o banco de dados, criar, popular e relacionar tabelas e também manipular os dados do database, realizando operações de `CRUD` (create, read, update e delete) utilizando apenas métodos JavaScript.
 
 A API é um sistema de gerenciamento de conteúdo para um blog, no qual permite manipular dados dos usuários, dos posts e suas categorias.
 
