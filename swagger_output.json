@@ -13,6 +13,7 @@
   "paths": {
     "/login": {
       "post": {
+        "tags": ["Login"],
         "description": "Through the login endpoint it is possible to obtain the authentication token so that the user has access to the other endpoints.",
         "parameters": [
           {
@@ -51,6 +52,7 @@
     },
     "/user": {
       "get": {
+        "tags": ["User"],
         "description": "Read all users in the MySQL database.",
         "parameters": [
           {
@@ -93,6 +95,7 @@
         }
       },
       "post": {
+        "tags": ["User"],
         "description": "Create a new user in the MySQL database",
         "parameters": [
           {
@@ -124,6 +127,7 @@
     },
     "/user/{id}": {
       "get": {
+        "tags": ["User"],
         "description": "Reads the user corresponding to the ID in the MySQL database.",
         "parameters": [
           {
@@ -176,6 +180,7 @@
     },
     "/user/me": {
       "delete": {
+        "tags": ["User"],
         "description": "Delete the user corresponding to the ID in the MySQL database.",
         "parameters": [
           {
@@ -204,6 +209,7 @@
     },
     "/categories": {
       "get": {
+        "tags": ["Categories"],
         "description": "Reads all categories in the MySQL database.",
         "parameters": [
           {
@@ -242,6 +248,7 @@
         }
       },
       "post": {
+        "tags": ["Categories"],
         "description": "Create a new category in the MySQL database",
         "parameters": [
           {
@@ -295,6 +302,7 @@
     },
     "/post": {
       "get": {
+        "tags": ["Post"],
         "description": "Reads all posts in the MySQL database.",
         "parameters": [
           {
@@ -365,6 +373,7 @@
         }
       },
       "post": {
+        "tags": ["Post"],
         "description": "Create a new post in the MySQL database",
         "parameters": [
           {
@@ -425,6 +434,7 @@
     },
     "/post/search": {
       "get": {
+        "tags": ["Post"],
         "description": "Reads the posts that match the query in the MySQL database.",
         "parameters": [
           {
@@ -506,6 +516,7 @@
     },
     "/post/{id}": {
       "get": {
+        "tags": ["Post"],
         "description": "Reads the post corresponding to the ID in the MySQL database.",
         "parameters": [
           {
@@ -570,6 +581,7 @@
         }
       },
       "put": {
+        "tags": ["Post"],
         "description": "Update the post corresponding to the ID in the MySQL database.",
         "parameters": [
           {
@@ -647,6 +659,7 @@
         }
       },
       "delete": {
+        "tags": ["Post"],
         "description": "Delete the post corresponding to the ID in the MySQL database.",
         "parameters": [
           {
